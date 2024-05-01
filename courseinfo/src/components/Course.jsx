@@ -23,8 +23,8 @@ const Content = ({ parts }) => {
 }
 
 const Total = ({ parts }) => {
-    let total = 0;
-    parts.map(part => total += part.exercises);
+    let total = parts.reduce((accumulator, currentPart) => accumulator + currentPart.exercises,
+    0 ) ;
     return (
             <p>
                 Total number of exercises {total}
