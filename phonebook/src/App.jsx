@@ -13,9 +13,21 @@ const App = () => {
   }
   const handleSubmitName = (event) => {
     event.preventDefault()
-    let newPersonsArray = persons.concat({ name: newName })
-    setPersons(newPersonsArray)
-    setNewName("")
+    let validation = true
+    
+    persons.map(person => {
+      if (person.name === newName) {
+        validation = false
+        alert(`${newName} is already added to the phonebook`)
+        return 
+      }
+    })
+
+    if (validation){
+      let newPersonsArray = persons.concat({ name: newName })
+      setPersons(newPersonsArray)
+      setNewName("")
+    }
   }
 
   return (
