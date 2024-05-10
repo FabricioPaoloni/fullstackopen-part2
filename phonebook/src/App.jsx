@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import Person from './components/Person'
+import Filter from './components/Filter'
+import AddPerson from './components/AddPerson'
+import PersonsList from './components/PersonsList'
 
 const App = () => {
   //A state variable that holds the name and phone of each person. We use some initial names to test.
@@ -16,14 +18,14 @@ const App = () => {
 
   let showAll = filterName === "" ? true : false
   let personsToShow = showAll
-    ? persons 
+    ? persons
     : persons.filter(person => {
       //We use a regular expression to test each person name with the filterName introduced by the user
       //The regexp is case insensitive
       let regex = new RegExp(filterName, 'i');
       let returnValue = regex.test(person.name)
       return returnValue
-  })
+    })
 
   const handleFilterName = (event) => {
     setFilterName(event.target.value)
@@ -45,17 +47,17 @@ const App = () => {
         validation = false
         alert(`${newName} is already added to the phonebook`)
       }
-      if(person.number === newNumber) {
+      if (person.number === newNumber) {
         validation = false
         alert(`${newNumber} is already added to another user`)
       }
     })
 
-    if (validation){
+    if (validation) {
       let newPersonsArray = persons.concat(
         {
-         name: newName, 
-         number: newNumber 
+          name: newName,
+          number: newNumber
         }
       )
       setPersons(newPersonsArray)
@@ -67,24 +69,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <p>
-        filter the list: <input value={filterName} onChange={handleFilterName} />
-      </p>
+      <Filter filterName={filterName} handleFilterName={handleFilterName} />
       <h3>Add a new contact:</h3>
-      <form onSubmit={handleSubmitName}>
-        <p>
-          name: <input value={newName} onChange={handleInputName} />
-        </p>
-        <p>
-          number: <input value={newNumber} onChange={handleInputNumber} />
-        </p>
-        <button type="submit">add</button>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {personsToShow.map(person => <Person key={person.name} person={person} />
-      )}
-      </ul>
+      <AddPerson handleSubmitName={handleSubmitName} newName={newName} handleInputName={handleInputName}
+         handleInputNumber={handleInputNumber} newNumber={newNumber} />
+      <h3>Numbers</h3>
+      <PersonsList personsToShow={personsToShow} />
     </div>
   )
 }
