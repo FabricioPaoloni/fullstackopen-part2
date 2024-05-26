@@ -1,20 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from "axios"
 import Filter from './components/Filter'
 import AddPerson from './components/AddPerson'
 import PersonsList from './components/PersonsList'
 
 const App = () => {
   //A state variable that holds the name and phone of each person. We use some initial names to test.
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '3415123123' },
-    { name: 'Aasdasdo Hellas', number: '345234623' },
-    { name: 'Arweas Rothdbard', number: '3252523' },
-    { name: 'Masa carc', number: '37536454123' },
-    { name: 'Ppuaisd Helqwe', number: '12345123' },
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('') //state used for add a new name
   const [newNumber, setNewNumber] = useState('') //used for add a new number
   const [filterName, setFilterName] = useState("") //used to filter the list of names
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/persons")
+      .then(response => {
+        setPersons(response.data)
+      })
+      console.log("axios promise fulfilled")
+  }, [])
+
 
   let showAll = filterName === "" ? true : false
   let personsToShow = showAll
