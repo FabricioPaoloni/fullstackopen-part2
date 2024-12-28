@@ -59,15 +59,17 @@ const App = () => {
     })
 
     if (validation) {
-      let newPersonsArray = persons.concat(
-        {
-          name: newName,
-          number: newNumber
-        }
-      )
-      setPersons(newPersonsArray)
-      setNewName("")
-      setNewNumber("")
+      let newPerson = {
+        name: newName,
+        number: newNumber
+      }
+      axios
+        .post("http://localhost:3001/persons", newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName("")
+          setNewNumber("")
+        })     
     }
   }
 
