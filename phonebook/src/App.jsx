@@ -3,6 +3,7 @@ import axios from "axios"
 import Filter from './components/Filter'
 import AddPerson from './components/AddPerson'
 import PersonsList from './components/PersonsList'
+import personServices from './services/persons'
 
 const App = () => {
   //A state variable that holds the name and phone of each person. We use some initial names to test.
@@ -12,11 +13,9 @@ const App = () => {
   const [filterName, setFilterName] = useState("") //used to filter the list of names
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
-      })
+    personServices
+      .getAll()
+      .then(initialData => setPersons(initialData))
       console.log("axios promise fulfilled")
   }, [])
 
@@ -63,10 +62,10 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      axios
-        .post("http://localhost:3001/persons", newPerson)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      personServices
+        .createPerson(newPerson)
+        .then(createdPerson => {
+          setPersons(persons.concat(createdPerson))
           setNewName("")
           setNewNumber("")
         })     
