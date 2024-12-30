@@ -11,29 +11,9 @@
       "id": "2"
     },
     {
+      "id": "dc72",
       "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": "4"
-    },
-    {
-      "id": "b779",
-      "name": "Db1",
-      "number": "123456"
-    },
-    {
-      "id": "d27c",
-      "name": "dbtest2",
-      "number": "4578"
-    },
-    {
-      "id": "bfb1",
-      "name": "Wachito",
-      "number": "123456789"
+      "number": "12-43-234345"
     }
   ]
 }

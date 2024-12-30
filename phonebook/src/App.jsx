@@ -72,6 +72,17 @@ const App = () => {
     }
   }
 
+  const handleDeletePerson = (id) => {
+    personServices
+      .deletePerson(id)
+      .then(deleted => {
+        console.log(deleted)
+        let auxArray = persons.filter(person => person.id !== id)
+        setPersons(auxArray)
+      })
+
+}
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -80,7 +91,7 @@ const App = () => {
       <AddPerson handleSubmitName={handleSubmitName} newName={newName} handleInputName={handleInputName}
          handleInputNumber={handleInputNumber} newNumber={newNumber} />
       <h3>Numbers</h3>
-      <PersonsList personsToShow={personsToShow} />
+      <PersonsList personsToShow={personsToShow} handleDeletePerson={handleDeletePerson} />
     </div>
   )
 }
