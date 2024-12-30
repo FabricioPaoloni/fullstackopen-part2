@@ -16,7 +16,7 @@ const App = () => {
     personServices
       .getAll()
       .then(initialData => setPersons(initialData))
-      console.log("axios promise fulfilled")
+    // console.log("axios promise fulfilled")
   }, [])
 
 
@@ -44,20 +44,49 @@ const App = () => {
 
   const handleSubmitName = (event) => {
     event.preventDefault()
-    let validation = true
+    let validationName = true
+    let validationNumber = true
+    let validationUpdate = false
 
     persons.map(person => {
       if (person.name === newName) {
-        validation = false
-        alert(`${newName} is already added to the phonebook`)
+        validationName = false
+        validationUpdate = window.confirm(`${newName} is already added to the phonebook. Do you want to update the phone number?`)
+        // console.log(validationUpdate)
       }
       if (person.number === newNumber) {
-        validation = false
-        alert(`${newNumber} is already added to another user`)
+        validationNumber = false
+        alert(`${newNumber} number is already added to another user`)
       }
     })
 
-    if (validation) {
+    if (validationUpdate && validationNumber) {
+      let personId = ''
+      let newPersonData = {}
+
+      persons.map(person => {
+        if (person.name === newName) {
+          personId = person.id
+          newPersonData = { ...person, number: newNumber }
+          // console.log(personId, newPersonData)
+        }
+      })
+      personServices
+        .updatePerson(personId, newPersonData)
+        .then(updatedPerson => {
+          let auxArray = persons.map(person => {
+            if (person.id === updatedPerson.id){
+              return updatedPerson
+            } else {
+              return person
+            }
+          })
+          // console.log(auxArray)
+          setPersons(auxArray)
+        })
+    }
+
+    if (validationName && validationNumber) {
       let newPerson = {
         name: newName,
         number: newNumber
@@ -68,7 +97,7 @@ const App = () => {
           setPersons(persons.concat(createdPerson))
           setNewName("")
           setNewNumber("")
-        })     
+        })
     }
   }
 
@@ -76,12 +105,15 @@ const App = () => {
     personServices
       .deletePerson(id)
       .then(deleted => {
-        console.log(deleted)
+        // console.log(deleted)
         let auxArray = persons.filter(person => person.id !== id)
         setPersons(auxArray)
       })
+  }
 
-}
+  const handleUpdatePerson = () => {
+
+  }
 
   return (
     <div>
@@ -89,7 +121,7 @@ const App = () => {
       <Filter filterName={filterName} handleFilterName={handleFilterName} />
       <h3>Add a new contact:</h3>
       <AddPerson handleSubmitName={handleSubmitName} newName={newName} handleInputName={handleInputName}
-         handleInputNumber={handleInputNumber} newNumber={newNumber} />
+        handleInputNumber={handleInputNumber} newNumber={newNumber} />
       <h3>Numbers</h3>
       <PersonsList personsToShow={personsToShow} handleDeletePerson={handleDeletePerson} />
     </div>
