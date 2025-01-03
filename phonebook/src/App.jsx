@@ -4,6 +4,8 @@ import Filter from './components/Filter'
 import AddPerson from './components/AddPerson'
 import PersonsList from './components/PersonsList'
 import personServices from './services/persons'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   //A state variable that holds the name and phone of each person. We use some initial names to test.
@@ -11,6 +13,9 @@ const App = () => {
   const [newName, setNewName] = useState('') //state used for add a new name
   const [newNumber, setNewNumber] = useState('') //used for add a new number
   const [filterName, setFilterName] = useState("") //used to filter the list of names
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
 
   useEffect(() => {
     personServices
@@ -84,6 +89,14 @@ const App = () => {
           // console.log(auxArray)
           setPersons(auxArray)
         })
+        .catch(error => {
+          setErrorMessage(`Information of ${newPersonData.name} has already been removed from the server`)
+          let auxArray = persons.filter(person => person.id !== personId)
+          setPersons(auxArray)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
 
     if (validationName && validationNumber) {
@@ -94,6 +107,11 @@ const App = () => {
       personServices
         .createPerson(newPerson)
         .then(createdPerson => {
+          
+          setSuccessMessage(`${newName} added successfully`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
           setPersons(persons.concat(createdPerson))
           setNewName("")
           setNewNumber("")
@@ -118,6 +136,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} style='success' />
+      <Notification message={errorMessage} style='error' />
       <Filter filterName={filterName} handleFilterName={handleFilterName} />
       <h3>Add a new contact:</h3>
       <AddPerson handleSubmitName={handleSubmitName} newName={newName} handleInputName={handleInputName}
