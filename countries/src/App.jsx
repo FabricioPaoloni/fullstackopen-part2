@@ -9,6 +9,7 @@ import CountryList from './components/CountryList'
 function App() {
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState('')
+  const [showCountry, setShowCountry] = useState(null)
 
   useEffect(() => {
     axios
@@ -19,6 +20,7 @@ function App() {
 
   const handleFilter = (event) => {
     setFilter(event.target.value)
+    setShowCountry(null)
   }
 
   return (
@@ -30,7 +32,7 @@ function App() {
             <form>
               <input type="text" onChange={handleFilter} value={filter} />
             </form>
-            <CountryList countries={countries} countryFilter={filter} />
+            <CountryList countries={countries} countryFilter={filter} showCountry={showCountry} setShowCountry={setShowCountry} />
           </>
       }
 
