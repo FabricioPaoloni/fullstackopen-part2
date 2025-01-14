@@ -1,3 +1,7 @@
+courseinfo app projecto corresponding to FullStackOpen part2 course
+To run the project, in the terminal run the following command:
+$ npm run dev
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
